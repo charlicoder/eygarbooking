@@ -8,7 +8,6 @@ const cache = new LRUCache({ max: 5000, ttl: config.auth.cacheTtlMs });
 export async function authenticate(req, _res, next) {
     try {
         const auth = req.headers.authorization;
-        console.log("auth: ", auth)
 
         if (!auth?.startsWith("Bearer ")) throw errors.unauthorized();
 
@@ -38,7 +37,6 @@ export async function authenticate(req, _res, next) {
             data: { token },
             timeoutMs: config.auth.timeoutMs,
         });
-        console.log("verifyRes: ", verifyRes)
 
         if (verifyRes.statusCode !== 200)
             throw errors.unauthorized("Invalid or expired token");
@@ -49,7 +47,7 @@ export async function authenticate(req, _res, next) {
             headers: { authorization: `Bearer ${token}` },
             timeoutMs: config.auth.timeoutMs,
         });
-        console.log("meRes: ", meRes)
+
 
         if (meRes.statusCode !== 200 || !meRes.data?.id) {
             throw errors.unauthorized("Unable to load user profile");
@@ -63,6 +61,8 @@ export async function authenticate(req, _res, next) {
             avatar_url: meRes.data.avatar_url,
             stripe_customer_id: meRes.data.stripe_customer_id,
             is_email_verified: meRes.data.is_email_verified,
+            host_id: meRes.data?.eygar_host?.id,
+            vendor_id: meRes.data?.eygar_vendor?.id,
         };
 
         cache.set(token, user);

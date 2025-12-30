@@ -11,11 +11,11 @@ export const CreateBookingSchema = z.object({
     currency: z.string().length(3),
 
     nights_stay: z.number().int().min(0),
-    price_per_night: z.number().int().min(0),
-    subtotal_amount: z.number().int().min(0),
-    service_fee: z.number().int().min(0),
-    cleaning_fee: z.number().int().min(0),
-    total_amount: z.number().int().min(0),
+    price_per_night: z.number().min(0),
+    subtotal_amount: z.number().min(0),
+    service_fee: z.number().min(0),
+    cleaning_fee: z.number().min(0),
+    total_amount: z.number().min(0),
 
     payment_details: z.record(z.any()).optional().default({}),
 });

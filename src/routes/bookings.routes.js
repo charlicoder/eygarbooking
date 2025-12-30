@@ -10,6 +10,12 @@ export function bookingsRoutes(bookingsController) {
     router.patch("/:id", authenticate, bookingsController.updateMine);
     router.post("/:id/cancel", authenticate, bookingsController.cancelMine);
     router.delete("/:id", authenticate, bookingsController.deleteMine);
+    router.post("/:id/payment-success", authenticate, bookingsController.markPaymentSuccessful);
+    router.post("/:id/checkin", authenticate, bookingsController.checkinMe);
+    router.get("/host/upcoming", authenticate, bookingsController.myActiveUpcommingBookings);
+
+    // NEW #3: host approves booking
+    router.post("/:id/host-approve", authenticate, bookingsController.hostApprove);
 
     return router;
 }

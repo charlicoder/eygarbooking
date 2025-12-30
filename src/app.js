@@ -2,11 +2,12 @@ import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
+import path from "path";
 
 import { healthRoutes } from "./routes/health.routes.js";
 import { bookingsRoutes } from "./routes/bookings.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import {authenticate} from "./middlewares/auth.js"
+import { authenticate } from "./middlewares/auth.js"
 
 import { BookingsRepo } from "./repositories/bookings.repo.js";
 import { BookingsService } from "./services/bookings.service.js";
@@ -14,6 +15,8 @@ import { BookingsController } from "./controllers/bookings.controller.js";
 
 export function buildApp() {
     const app = express();
+
+    app.use("/static", express.static(path.resolve(process.cwd(), "src/static")));
 
     app.use(helmet());
 
@@ -28,7 +31,7 @@ export function buildApp() {
     }));
 
     app.use(express.json({ limit: "1mb" }));
-    
+
     app.use(
         rateLimit({
             windowMs: 60_000,
