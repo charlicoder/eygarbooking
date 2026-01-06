@@ -1,0 +1,8 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3007:3007"
+    env_file:
+      - ./.env
+    restart: unless-stopped
